@@ -16,12 +16,22 @@ class Login extends React.Component {
     this.attemptLogin = this.attemptLogin.bind(this)
   }
 
+  componentDidMount() {
+    let authorizationToken = window.localStorage.authorizationToken
+
+    if (typeof(authorizationToken) === 'string') {
+      this.props.appState.authorization.token = authorizationToken
+      this.props.router.push('/dashboard')
+    }
+  }
+
   attemptLogin (data) {
     let loginService = new LoginService()
     let that = this
 
     loginService.fetch(data.username, data.password).then(function(response) {
       that.props.appState.authorization.token = response.auth_token
+      window.localStorage.authorizationToken = response.auth_token
       that.props.router.push('/dashboard')
     })
   }
