@@ -12,11 +12,18 @@ import Footer from 'grommet/components/Footer'
 import Split from 'grommet/components/Split'
 import Box from 'grommet/components/Box'
 import Button from 'grommet/components/Button'
-import UserIcon from 'grommet/components/icons/base/User'
+import LogoutIcon from 'grommet/components/icons/base/Logout'
+import Edit from 'grommet/components/icons/base/Edit'
 
 @inject('appState') @observer
 export default class Dashboard extends React.Component {
   @observable userName = 'Loading...'
+
+  constructor (props) {
+    super(props)
+
+    this.logout = this.logout.bind(this)
+  }
 
   componentDidMount () {
     let userService = new UserService(this.props.appState.authorization.token)
@@ -25,6 +32,11 @@ export default class Dashboard extends React.Component {
     userService.fetch().then(function (response) {
       that.userName = response.name
     })
+  }
+
+  logout () {
+    window.localStorage.removeItem('authorizationToken')
+    this.props.router.push('/')
   }
 
   render () {
@@ -54,7 +66,7 @@ export default class Dashboard extends React.Component {
               </Menu>
             </Box>
             <Footer pad='medium'>
-              <Button icon={<UserIcon />} />
+              <Button icon={<LogoutIcon />} label='Logout' onClick={ this.logout } plain={true}/>
             </Footer>
           </Sidebar>
 
