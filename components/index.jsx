@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Routes from 'Routes'
-import {observable} from 'mobx';
+import {observable} from 'mobx'
 import {Provider} from 'mobx-react'
 
 const appState = observable({
@@ -11,7 +11,7 @@ const appState = observable({
 })
 
 ReactDOM.render(
-  <Provider appState={ appState }>
+  <Provider appState={appState}>
     <Routes />
   </Provider>, document.getElementById('root')
 )

@@ -1,7 +1,7 @@
 import ApiService from 'ApiService'
 
 export default class UserService {
-  constructor(token) {
+  constructor (token) {
     this.token = token
   }
 
