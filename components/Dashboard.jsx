@@ -13,6 +13,7 @@ import Split from 'grommet/components/Split'
 import Box from 'grommet/components/Box'
 import UserIcon from 'grommet/components/icons/base/User'
 import Heading from 'grommet/components/Heading'
+import AppStateService from 'AppStateService'
 
 @inject('appState') @observer
 export default class Dashboard extends React.Component {
@@ -25,6 +26,8 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount () {
+    AppStateService.load(this)
+
     let userService = new UserService(this.props.appState.authorization.token)
     let that = this
 

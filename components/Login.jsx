@@ -7,6 +7,7 @@ import LoginService from 'LoginService'
 import Devtools from 'mobx-react-devtools'
 import {observable} from 'mobx';
 import {observer, inject} from 'mobx-react';
+import AppStateService from 'AppStateService'
 
 @inject('appState') @observer
 class Login extends React.Component {
@@ -17,10 +18,9 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    let authorizationToken = window.localStorage.authorizationToken
+    AppStateService.load(this)
 
-    if (typeof(authorizationToken) === 'string') {
-      this.props.appState.authorization.token = authorizationToken
+    if (typeof(this.props.appState.authorization.token) === 'string') {
       this.props.router.push('/dashboard')
     }
   }
