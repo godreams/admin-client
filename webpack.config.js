@@ -10,6 +10,9 @@ var config = {
     path: BUILD_DIR,
     filename: 'bundle.js'
   },
+  devServer: {
+    historyApiFallback: true
+  },
   resolve: {
     modules: [APP_DIR, SERVICES_DIR, 'node_modules'],
     extensions: ['.js', '.scss', '.css', '.jsx']
