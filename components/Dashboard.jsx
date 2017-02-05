@@ -11,8 +11,7 @@ import Anchor from 'grommet/components/Anchor'
 import Footer from 'grommet/components/Footer'
 import Split from 'grommet/components/Split'
 import Box from 'grommet/components/Box'
-import Button from 'grommet/components/Button'
-import LogoutIcon from 'grommet/components/icons/base/Logout'
+import UserIcon from 'grommet/components/icons/base/User'
 import Heading from 'grommet/components/Heading'
 
 @inject('appState') @observer
@@ -68,11 +67,16 @@ export default class Dashboard extends React.Component {
                 <Anchor href='#'>Coaches</Anchor>
                 <Anchor href='#'>Fellows</Anchor>
               </Menu>
-
-              <Footer pad={ {vertical: 'medium'} }>
-                <Button icon={<LogoutIcon />} label='Logout' onClick={ this.logout } plain={true} />
-              </Footer>
             </Box>
+
+            <Footer pad={{horizontal: 'medium', vertical: 'small'}}>
+              <Menu icon={<UserIcon />} dropAlign={{bottom: 'bottom'}} colorIndex="neutral-1-a">
+                <Box pad="medium">
+                  <Heading tag="h3" margin="none">{this.userName}</Heading>
+                </Box>
+                <Anchor href="#" onClick={this.logout} label="Logout" />
+              </Menu>
+            </Footer>
           </Sidebar>
 
           <Box colorIndex='neutral-2' justify='center' align='center' pad='medium'>
