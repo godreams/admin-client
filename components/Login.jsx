@@ -18,7 +18,7 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    AppStateService.load(this)
+    AppStateService.loadState(this)
 
     if (typeof(this.props.appState.authorization.token) === 'string') {
       this.props.router.push('/dashboard')

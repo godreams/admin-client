@@ -26,7 +26,12 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount () {
-    AppStateService.load(this)
+    AppStateService.loadState(this)
+
+    if (typeof(this.props.appState.authorization.token) !== 'string') {
+      this.props.router.push('/')
+      return
+    }
 
     let userService = new UserService(this.props.appState.authorization.token)
     let that = this
@@ -37,7 +42,7 @@ export default class Dashboard extends React.Component {
   }
 
   logout () {
-    window.localStorage.removeItem('authorizationToken')
+    AppStateService.unloadState(this)
     this.props.router.push('/')
   }
 
