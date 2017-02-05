@@ -13,7 +13,7 @@ import Split from 'grommet/components/Split'
 import Box from 'grommet/components/Box'
 import Button from 'grommet/components/Button'
 import LogoutIcon from 'grommet/components/icons/base/Logout'
-import Edit from 'grommet/components/icons/base/Edit'
+import Heading from 'grommet/components/Heading'
 
 @inject('appState') @observer
 export default class Dashboard extends React.Component {
@@ -44,30 +44,35 @@ export default class Dashboard extends React.Component {
       <App centered={false}>
         <Split flex='right'>
           <Sidebar colorIndex='neutral-1'>
-            <Header pad='medium'
-              justify='between'>
-              <Title>
-                Title
-              </Title>
-            </Header>
-            <Box flex='grow'
-              justify='start'>
-              <Menu primary={true}>
-                <Anchor href='#'
-                  className='active'>
-                  First
-                </Anchor>
-                <Anchor href='#'>
-                  Second
-                </Anchor>
-                <Anchor href='#'>
-                  Third
-                </Anchor>
+            <Box pad={ {horizontal: 'medium'} }>
+              <Header>
+                <Title>
+                  National Finance Head
+                </Title>
+              </Header>
+
+              <Menu size="small">
+                <Header align='end'>
+                  <Heading tag='h4' strong={ true }>Donations</Heading>
+                </Header>
+
+                <Anchor href='#' className='active'>Pending</Anchor>
+                <Anchor href='#'>Approved</Anchor>
+
+
+                <Header align='end'>
+                  <Heading tag='h4' strong={ true }>Users</Heading>
+                </Header>
+
+                <Anchor href='#'>Volunteers</Anchor>
+                <Anchor href='#'>Coaches</Anchor>
+                <Anchor href='#'>Fellows</Anchor>
               </Menu>
+
+              <Footer pad={ {vertical: 'medium'} }>
+                <Button icon={<LogoutIcon />} label='Logout' onClick={ this.logout } plain={true} />
+              </Footer>
             </Box>
-            <Footer pad='medium'>
-              <Button icon={<LogoutIcon />} label='Logout' onClick={ this.logout } plain={true}/>
-            </Footer>
           </Sidebar>
 
           <Box colorIndex='neutral-2' justify='center' align='center' pad='medium'>
