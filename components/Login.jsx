@@ -17,7 +17,7 @@ class Login extends React.Component {
     this.attemptLogin = this.attemptLogin.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     AppStateService.loadState(this)
 
     if (typeof(this.props.appState.authorization.token) === 'string') {
@@ -29,11 +29,23 @@ class Login extends React.Component {
     let loginService = new LoginService()
     let that = this
 
-    loginService.fetch(data.username, data.password).then(function(response) {
+    loginService.fetch(data.username, data.password).then(function (response) {
       that.props.appState.authorization.token = response.auth_token
+      that.props.appState.authorization.loginFailureMessage = null
       window.localStorage.authorizationToken = response.auth_token
       that.props.router.push('/dashboard')
+    }).catch(function (response) {
+      console.log(response.code)
+      that.props.appState.authorization.loginFailureMessage = response.message
     })
+  }
+
+  errors () {
+    if (this.props.appState.authorization.loginFailureMessage) {
+      return [this.props.appState.authorization.loginFailureMessage]
+    } else {
+      return []
+    }
   }
 
   render () {
@@ -42,7 +54,7 @@ class Login extends React.Component {
         <Devtools />
         <Box align='center'>
           <LoginForm onSubmit={this.attemptLogin} title='GoDreams' secondaryText='Administration Interface'
-            rememberMe />
+            errors={ this.errors() } rememberMe />
         </Box>
       </App>
     )
