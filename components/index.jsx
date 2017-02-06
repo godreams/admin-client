@@ -8,7 +8,7 @@ const appState = observable({
   authorization: {
     token: null,
     loginFailureMessage: null
-  },
+  }
 })
 
 ReactDOM.render(
