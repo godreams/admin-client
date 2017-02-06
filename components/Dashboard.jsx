@@ -14,6 +14,7 @@ import Box from 'grommet/components/Box'
 import UserIcon from 'grommet/components/icons/base/User'
 import Heading from 'grommet/components/Heading'
 import AppStateService from 'AppStateService'
+import DonationsTable from 'DonationsTable'
 
 @inject('appState') @observer
 export default class Dashboard extends React.Component {
@@ -87,12 +88,17 @@ export default class Dashboard extends React.Component {
             </Footer>
           </Sidebar>
 
+          <Box direction='column'>
           <Box colorIndex='neutral-2' justify='center' align='center' pad='medium'>
             <Header direction='row' justify='between' pad={{horizontal: 'medium'}}>
               <Title>GoDreams Admin Interface</Title>
             </Header>
 
             Logged in user's name is: { this.userName }
+          </Box>
+          <Box>
+            <DonationsTable />
+          </Box>
           </Box>
         </Split>
       </App>
