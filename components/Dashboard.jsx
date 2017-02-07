@@ -20,6 +20,7 @@ import DonationForm from 'DonationForm'
 
 @inject('appState') @observer
 @observer export default class Dashboard extends React.Component {
+  @observable userName = 'Loading...'
   @observable donationFormVisible = false
 
   constructor (props) {
