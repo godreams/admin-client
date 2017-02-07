@@ -14,10 +14,12 @@ export default class ApiService {
     }
   }
 
-  fetch (path) {
-    console.log('Calling ' + this.fullUrl(path))
+  fetch (path, method = 'GET', body = null) {
+    console.log('Callings ' + this.fullUrl(path))
     return fetch(this.fullUrl(path), {
-      headers: this.headers()
+      method: method,
+      headers: this.headers(),
+      body: body
     }).then(function(response) {
       let parseResponse = response.json()
 
@@ -27,6 +29,10 @@ export default class ApiService {
         return parseResponse.then(parsedResponse => Promise.reject(parsedResponse))
       }
     })
+  }
+
+  post (path, body) {
+    this.fetch(path, 'POST', body)
   }
 
   fullUrl (path) {
