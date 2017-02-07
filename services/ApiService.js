@@ -24,8 +24,7 @@ export default class ApiService {
       if (response.ok) {
         return parseResponse
       } else {
-        // TODO: The error response object from server appears to be an array of errors under the 'error' key. It should be a single error.
-        return parseResponse.then(parsedResponse => Promise.reject(parsedResponse.errors[0]))
+        return parseResponse.then(parsedResponse => Promise.reject(parsedResponse))
       }
     })
   }
