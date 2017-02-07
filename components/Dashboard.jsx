@@ -15,15 +15,19 @@ import UserIcon from 'grommet/components/icons/base/User'
 import Heading from 'grommet/components/Heading'
 import AppStateService from 'AppStateService'
 import DonationsTable from 'DonationsTable'
+import Button from 'grommet/components/Button'
+import DonationForm from 'DonationForm'
 
 @inject('appState') @observer
-export default class Dashboard extends React.Component {
-  @observable userName = 'Loading...'
+@observer export default class Dashboard extends React.Component {
+  @observable donationFormVisible = false
 
   constructor (props) {
     super(props)
 
     this.logout = this.logout.bind(this)
+    this.showDonationForm = this.showDonationForm.bind(this)
+    this.hideDonationForm = this.hideDonationForm.bind(this)
   }
 
   componentDidMount () {
@@ -45,6 +49,14 @@ export default class Dashboard extends React.Component {
   logout () {
     AppStateService.unloadState(this)
     this.props.router.push('/')
+  }
+
+  showDonationForm () {
+    this.donationFormVisible = true
+  }
+
+  hideDonationForm () {
+    this.donationFormVisible = false
   }
 
   render () {
@@ -95,6 +107,10 @@ export default class Dashboard extends React.Component {
             </Header>
 
             Logged in user's name is: { this.userName }
+          </Box>
+          <Box margin='medium' alignSelf='center'>
+            <Button label='Add Donation' primary={ true } onClick={ this.showDonationForm }/>
+            { this.donationFormVisible && <DonationForm closeLayerCB={ this.hideDonationForm }/> }
           </Box>
           <Box>
             <DonationsTable />
