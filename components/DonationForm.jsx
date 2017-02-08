@@ -1,6 +1,6 @@
 import React from 'react'
 import {observer, inject} from 'mobx-react'
-import {observable} from 'mobx'
+import {observable, computed} from 'mobx'
 import Layer from 'grommet/components/Layer'
 import Form from 'grommet/components/Form'
 import Header from 'grommet/components/Header'
@@ -24,12 +24,44 @@ export default class DonationForm extends React.Component {
     address: null
   }
 
+  @computed get hasNameError() {
+    return this.donationDetails.name != null && this.donationDetails.name.length == 0
+  }
+
+  @computed get hasEmailError() {
+    // Reference for regex: http://www.w3resource.com/javascript/form/email-validation.php
+    const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
+    let invalid = !EMAIL_REGEX.test(this.donationDetails.email)
+    let notEmpty = this.donationDetails.email != null
+    return  notEmpty && invalid
+  }
+
+  @computed get hasPhoneError() {
+    let notEmpty = this.donationDetails.phone != null
+    const PHONE_REGEX = /^[0-9]{10}$/
+    let invalid = !PHONE_REGEX.test(this.donationDetails.phone)
+    return invalid && notEmpty
+  }
+
+  @computed get hasAmountError() {
+    return this.donationDetails.amount != null && this.donationDetails.amount < 1
+  }
+
+  @computed get hasAnyError() {
+    let required = [this.donationDetails.name, this.donationDetails.email, this.donationDetails.phone, this.donationDetails.amount]
+    return required.includes(null) || this.hasNameError || this.hasEmailError || this.hasPhoneError || this.hasAmountError
+  }
+
   constructor (props) {
     super(props)
 
     this.handleClose = this.handleClose.bind(this)
     this.updateDetail = this.updateDetail.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.nameErrorMessage = this.nameErrorMessage.bind(this)
+    this.emailErrorMessage = this.emailErrorMessage.bind(this)
+    this.phoneErrorMessage = this.phoneErrorMessage.bind(this)
+    this.amountErrorMessage = this.amountErrorMessage.bind(this)
     this.submit = this.submit.bind(this)
   }
 
@@ -45,15 +77,36 @@ export default class DonationForm extends React.Component {
     this.updateDetail(event.target.name, event.target.value)
   }
 
-  submit () {
-    let form = new FormData()
-    Object.keys(this.donationDetails).forEach(key => form.append(key, this.donationDetails[key]));
+  nameErrorMessage () {
+    return this.hasNameError ? "cannot be blank" : ""
+  }
 
-    let apiService = new ApiService(this.props.appState.authorization.token)
-    apiService.post('donations', form).then(response => {
-      // TODO: Handle response
-      console.log(response)
-    })
+  emailErrorMessage () {
+    return this.hasEmailError ? "doesn't look like a valid email" : ""
+  }
+
+  phoneErrorMessage () {
+    return this.hasPhoneError ? "is not a 10-digit mobile number" : ""
+  }
+
+  amountErrorMessage () {
+    return this.hasAmountError ? "needs to a positive number" : ""
+  }
+
+  submit () {
+    if(this.hasAnyError) {
+      // TODO: Display alert of error
+      console.log('Form has error!')
+    } else {
+      let form = new FormData()
+      Object.keys(this.donationDetails).forEach(key => form.append(key, this.donationDetails[key]));
+
+      let apiService = new ApiService(this.props.appState.authorization.token)
+      apiService.post('donations', form).then(response => {
+        // TODO: Handle response
+        console.log(response)
+      })
+    }
   }
 
   render () {
@@ -65,16 +118,16 @@ export default class DonationForm extends React.Component {
               Donor Details
             </Heading>
           </Header>
-          <FormField label='Name'>
+          <FormField label='Name' error={ this.nameErrorMessage() }>
             <TextInput name='name' onDOMChange={ this.onChange }/>
           </FormField>
-          <FormField label='Email'>
+          <FormField label='Email' error={ this.emailErrorMessage() }>
             <TextInput name='email' onDOMChange={ this.onChange }/>
           </FormField>
-          <FormField label='Phone'>
+          <FormField label='Phone' error={ this.phoneErrorMessage() }>
             <TextInput name='phone' onDOMChange={ this.onChange }/>
           </FormField>
-          <FormField label='Amount'>
+          <FormField label='Amount' error={ this.amountErrorMessage() }>
             <NumberInput name='amount' onChange={ this.onChange }/>
           </FormField>
           <FormField label='PAN'>
