@@ -32,6 +32,8 @@ class Login extends React.Component {
     loginService.fetch(data.username, data.password).then(function (response) {
       that.props.appState.authorization.token = response.auth_token
       that.props.appState.authorization.loginFailureMessage = null
+      that.props.appState.authorization.currentUserName = response.name
+      that.props.appState.authorization.currentUserRole = response.role
       window.localStorage.authorizationToken = response.auth_token
       that.props.router.push('/dashboard')
     }).catch(function (response) {

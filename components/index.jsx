@@ -7,7 +7,9 @@ import {Provider} from 'mobx-react'
 const appState = observable({
   authorization: {
     token: null,
-    loginFailureMessage: null
+    loginFailureMessage: null,
+    currentUserName: null,
+    currentUserRole: null
   }
 })
 

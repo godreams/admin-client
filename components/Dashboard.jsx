@@ -32,6 +32,7 @@ import DonationForm from 'DonationForm'
   }
 
   componentDidMount () {
+    // TODO: @hari: Do we need the loadState below? Cant we just use UserService(window.localStorage.authorizationToken) with a presence check?
     AppStateService.loadState(this)
 
     if (typeof(this.props.appState.authorization.token) !== 'string') {
@@ -39,11 +40,16 @@ import DonationForm from 'DonationForm'
       return
     }
 
+    // TODO: Isn't it better to call this an AuthorizationService?
     let userService = new UserService(this.props.appState.authorization.token)
     let that = this
 
     userService.fetch().then(function (response) {
+      // TODO: Probably just update currentUserName and currentUserRole here?
       that.userName = response.name
+    }).catch(function (response) {
+      // TODO: simply call this.logout() here?
+      console.log(response.code)
     })
   }
 
@@ -104,10 +110,10 @@ import DonationForm from 'DonationForm'
           <Box direction='column'>
           <Box colorIndex='neutral-2' justify='center' align='center' pad='medium'>
             <Header direction='row' justify='between' pad={{horizontal: 'medium'}}>
-              <Title>GoDreams Admin Interface</Title>
+              <Title>Guardians donorApp</Title>
             </Header>
-
-            Logged in user's name is: { this.userName }
+            <h3>Welcome {this.props.appState.authorization.currentUserName}</h3>
+            <em>(You are logged in as a { this.props.appState.authorization.currentUserRole })</em>
           </Box>
           <Box margin='medium' alignSelf='center'>
             <Button label='Add Donation' primary={ true } onClick={ this.showDonationForm }/>
