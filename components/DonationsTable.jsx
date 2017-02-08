@@ -41,7 +41,7 @@ import ApiService from 'ApiService'
         <td>{donation.name}</td>
         <td>{donation.amount}</td>
         <td>{donation.created_at}</td>
-        <td className="secondary">Pending</td>
+        <td className="secondary">{donation.status}</td>
       </TableRow>
     )
   }
